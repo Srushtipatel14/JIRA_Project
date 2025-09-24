@@ -8,25 +8,47 @@ import { useState } from "react";
 import axios from "axios";
 import { API_AUTH_URL } from "@/app/utils/config";
 import Link from "next/link";
+import Cookies from "js-cookie";
+
+interface formdata {
+  userName?: string;
+  email?: string;
+  password?: string;
+}
 
 const UserLogin = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [formdata, setFormdata] = useState<formdata>({});
+
+  const handlechange = (e: any) => {
+    const { name, value } = e.target;
+    setFormdata((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const submitForm = async () => {
     try {
-      const data = {
-        email: email
+      const response = await axios.post(`${API_AUTH_URL}/signin`, formdata, {
+        withCredentials: true
+      });
+      if (response.data.success) {
+        Cookies.set("logged_user", JSON.stringify(response.data.data), {
+          expires: 1, 
+          secure: true,  
+          sameSite: "strict"
+        });
+        router.push(`/`)
       }
-      const response=await axios.post(`${API_AUTH_URL}/signin`,data);
-      if(response.data.success){
-        const id=response?.data?.data?._id;
-        router.push(`/user/userotp/${id}`)
+      else {
+        toast.error(response.data.message)
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.response.data.message)
     }
   }
+
   return (
     <div className="container-fluid flex-grow-1 d-flex justify-content-center align-items-center bg_image">
       <div className="card p-4 text-center form_styling" style={{ width: "350px" }}>
@@ -37,10 +59,10 @@ const UserLogin = () => {
           <p className="login_font fs-4">Login</p>
         </div>
         <div className="my-2">
-          <input onChange={(e) => setEmail(e.target.value)} type="email" className="form-control" placeholder="Email" />
+          <input onChange={handlechange} value={formdata.email || ''} name="email" type="email" className="form-control" placeholder="Email" />
         </div>
-         <div className="my-2">
-          <input onChange={(e) => setEmail(e.target.value)} type="text" className="form-control" placeholder="Password" />
+        <div className="my-2">
+          <input onChange={handlechange} value={formdata.password || ''} name="password" type="text" className="form-control" placeholder="Password" />
         </div>
         <div className="mt-5">
           <button className="button-primary w-100" onClick={submitForm}>Login</button>

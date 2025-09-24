@@ -3,14 +3,16 @@ const sendToken = async (user, statusCode, res) => {
     res.cookie('token', token, {
         httpOnly: true,
         secure: false,
-        maxAge:60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000,
         sameSite: 'lax'
     });
     return res.status(statusCode).json({
         success: true,
-        user: user.firstName,
-        email: user.email,
-        role: user.role,
+        data: {
+            user: user.userName,
+            email: user.email,
+            role: user.role,
+        }
     })
 };
 
@@ -21,7 +23,7 @@ const getAccessTokenFromHeader = (req) => {
 
 const isTokenIncluded = (req) => {
     return (
-       req.cookies && req.cookies.token
+        req.cookies && req.cookies.token
     )
 }
 

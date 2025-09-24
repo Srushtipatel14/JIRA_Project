@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import "../../css/userlogin.css";
 import RightBar from "./rightBar";
 import Image from 'next/image';
-import Cookies from "js-cookie";
 import { useSearch } from "../context/searchContext";
 import { useUser } from "../context/userContext";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const { setShowSearch } = useSearch();
@@ -23,7 +23,8 @@ const Navbar = () => {
         setSelectUser(userVal)
       }
       else {
-        setSelectUser(null)
+        setSelectUser(null);
+        router.push("/user/login")
       }
   }, []);
   return (
@@ -65,7 +66,7 @@ const Navbar = () => {
               {selectUser!==null ? (
                 <div className="d-flex align-items-center gap-2">
                   <img
-                    src={selectUser?.imageURL}
+                    src="/user.jpg"
                     alt="user"
                     style={{
                       width: "35px",

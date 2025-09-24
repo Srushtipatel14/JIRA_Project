@@ -28,8 +28,8 @@
   background: linear-gradient(
     135deg,
     rgb(0, 0, 0) 0%,
-    rgb(0, 0, 0) 20%,
-    rgb(151, 8, 15) 100%
+    rgb(0, 0, 0) 5%,
+    rgb(250, 82, 82) 100%
   );
   color: var(--secondary-sub-color);
   border-radius: 12px;
