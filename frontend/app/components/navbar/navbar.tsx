@@ -42,7 +42,7 @@ const Navbar = () => {
               </p>
             </div>
 
-            <form className="form-inline d-none d-md-block">
+            {/* <form className="form-inline d-none d-md-block">
               <div className="input-group">
                 <span className="input-group-text bg-white border-end-0">
                   <IoSearch size={14} />
@@ -59,7 +59,7 @@ const Navbar = () => {
                   style={{ outline: "none", boxShadow: "none" }}
                 />
               </div>
-            </form>
+            </form> */}
           </div>
           <div className="d-flex align-items-center gap-4">
             <div className="d-flex align-items-center gap-2">

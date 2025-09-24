@@ -28,7 +28,7 @@
   background: linear-gradient(
     135deg,
     rgb(0, 0, 0) 0%,
-    rgb(0, 0, 0) 5%,
+    rgb(0, 0, 0) 30%,
     rgb(250, 82, 82) 100%
   );
   color: var(--secondary-sub-color);
