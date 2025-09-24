@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ["pending", "in progress", "complete"],
+            values: ["Pending", "In Progress", "Complete"],
             message: "{VALUE} is not supported status",
         },
         default: "pending"
@@ -30,7 +30,7 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ["high", "medium", "low"],
+            values: ["High", "Medium", "Low"],
             message: "{VALUE} is not supported status",
         }
     },

@@ -3,7 +3,8 @@ const Task = require("../../../models/taskModel");
 
 const getAllTaskByProject = async (req, res, next) => {
     try {
-        const taskData = await Task.find().populate("assignId", "userName email role").lean();
+        const id=req.params.id;
+        const taskData = await Task.find({projectId:id}).populate("assignId", "userName email role").lean();
 
         return res.status(200).json({
             success: true,

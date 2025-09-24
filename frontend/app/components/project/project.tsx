@@ -150,10 +150,10 @@ const Project = () => {
                 <Column header="No." body={(_, options) => options.rowIndex + 1}></Column>
                 <Column field="title" header="Title" sortable></Column>
                 <Column field="description" header="Description" sortable></Column>
-                <Column header="Add Screen" body={(rawData) => (
+                <Column header="Add Task" body={(rawData) => (
                     <div>
                         <button className="screen_add" onClick={() => {
-                            router.push(`/owner/cinema/${rawData.id}`)
+                            router.push(`/${rawData._id}`)
                         }}>Add</button>
                     </div>
                 )}></Column>
@@ -161,11 +161,24 @@ const Project = () => {
                     <FaEdit onClick={async () => {
                         OpenProjectAddModal();
                         setProjectAddFormShow(true);
-                        const editModeRes = await axios.get(`${API_ADMIN_URL}/getsingleproject/${rowData._id}`, {
-                            withCredentials: true
-                        });
-                        setProjectDataObj(editModeRes?.data?.data)
-                    }} />
+                        try {
+                            const editModeRes = await axios.get(`${API_ADMIN_URL}/getsingleproject/${rowData._id}`,
+                                { withCredentials: true }
+                            );
+                            let projectData = editModeRes?.data?.data;
+                            if (projectData?.collaborators?.length) {
+                                projectData = {
+                                    ...projectData,
+                                    collaborators: projectData.collaborators.map((c:any) => ({
+                                        userId: c.userId._id ? c.userId._id : c.userId
+                                    }))
+                                };
+                            }
+                            setProjectDataObj(projectData);
+                        } catch (error) {
+                        }
+                    }}
+                    />
                 )} ></Column>
             </DataTable>
             <Modal

@@ -5,6 +5,8 @@ const getSingleProject = async (req, res, next) => {
     try {
         const projectId = req.params.id;
         const projectData = await Project.findById(projectId)
+            .populate("collaborators.userId", "userName email role")
+            .lean();
         if (!projectData) {
             return next(new ErrorHandler("Project not found", 404));
         }
