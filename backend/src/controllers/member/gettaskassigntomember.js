@@ -11,7 +11,7 @@ const getTaskAssignToMember = async (req, res, next) => {
             });
 
         if (!tasks || tasks.length === 0) {
-            return res.status(404).json({ success: false, message: "No tasks assigned to this user" });
+            return res.status(200).json({ success: false, message: "No tasks assigned to this user" });
         }
         const formattedTasks = tasks.map(task => ({
             ...task.toObject(),

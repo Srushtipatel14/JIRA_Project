@@ -30,7 +30,6 @@ interface OptionType {
 
 const Task: React.FC<TaskProps> = ({ role }) => {
     const [task, setTask] = useState<TaskData[]>([]);
-    const router = useRouter();
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -47,7 +46,7 @@ const Task: React.FC<TaskProps> = ({ role }) => {
         };
 
         fetchDetails();
-    }, [role]);
+    }, []);
 
     const handleSelection = async (selectedOption: SingleValue<OptionType>, field: keyof TaskData) => {
         try {
