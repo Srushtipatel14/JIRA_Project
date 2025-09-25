@@ -7,9 +7,11 @@ import Project from "./project/project";
 import Task from "./task/task";
 import TaskMember from "./memberTask/task";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Homescreen = () => {
     const params = useParams();
+    const router=useRouter();
     let id = params?.id;
     if (Array.isArray(id)) {
         id = id[0];
@@ -23,11 +25,13 @@ const Homescreen = () => {
             if (loggedUser) {
                 setUser(JSON.parse(loggedUser));
             }
+            else{
+                router.push("/user/login")
+            }
         }
     }, []);
 
     if (!user) {
-        // Full-page loader
         return (
             <div
                 style={{
