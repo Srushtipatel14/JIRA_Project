@@ -43,6 +43,15 @@ interface TaskDataObj {
     projectId?: string;
 }
 
+interface errMsg {
+    title?: string;
+    description?: string;
+    status?: string;
+    priority?: string;
+    assignId?: string;
+    duedate?: string;
+}
+
 interface TaskProps {
     id: string;
 }
@@ -57,7 +66,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
     const [memberData, setMemberData] = useState<memberData[]>([])
     const [taskAddFormShow, setTaskAddFormShow] = useState<boolean>(false);
     const [taskDataObj, setTaskDataObj] = useState<TaskDataObj>({});
-    const router = useRouter();
+    const [errMsg, setErrMsg] = useState<errMsg>({});
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -77,6 +86,9 @@ const Task: React.FC<TaskProps> = ({ id }) => {
     }, [id]);
 
     const submitForm = async () => {
+        if (!validateForm()) {
+            return;
+        }
         try {
             taskDataObj.projectId = id;
             if (taskDataObj?._id) {
@@ -90,6 +102,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                     )
                 );
                 setTaskAddFormShow(false)
+                setErrMsg({})
                 setTaskDataObj({})
                 return toast.success("Project update successfully");
             }
@@ -101,6 +114,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                 setTask((prevProject) => [...prevProject, data]);
                 setTaskAddFormShow(false)
                 setTaskDataObj({})
+                setErrMsg({})
                 return toast.success("Project add successfully");
             }
         } catch (error: any) {
@@ -108,12 +122,43 @@ const Task: React.FC<TaskProps> = ({ id }) => {
         }
     }
 
+    const validateField = (name: string) => {
+        let errors = { ...errMsg };
+        switch (name) {
+            case "title":
+            case "description":
+            case "status":
+            case "priority":
+            case "assignId":
+            case "duedate":
+                delete errors[name];
+                break;
+            default:
+                break;
+        }
+        setErrMsg(errors);
+    };
+
+    const validateForm = () => {
+        const errors: { [key: string]: string } = {};
+        const fields: (keyof TaskDataObj)[] = ["title", "description", "status", "priority", "assignId", "duedate"];
+        fields.forEach((field) => {
+            const value = taskDataObj[field];
+            if (!value || (typeof value === "string" && value.trim() === "")) {
+                errors[field] = "*";
+            }
+        });
+        setErrMsg(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setTaskDataObj((prev) => ({
             ...(prev || {}),
             [name]: value
         }))
+        validateField(name)
     }
 
     const handleSelection = (selectedOption: SingleValue<OptionType>, field: keyof TaskDataObj) => {
@@ -121,6 +166,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
             ...prev,
             [field]: selectedOption?.value || ""
         }));
+        validateField(field)
     };
 
     const memberOptions = (memberData || []).map((item) => ({
@@ -166,7 +212,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
 
                 <div className="d-flex gap-1">
                     <button className="admin_city_add" onClick={OpenProjectAddModal}>Add Task <i className="fa fa-tasks" aria-hidden="true"></i></button>
-                    <BackButton/>
+                    <BackButton />
                 </div>
             </div>
             <DataTable value={task} rows={10} tableStyle={{ minWidth: '50rem' }} sortOrder={-1}>
@@ -192,6 +238,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                 onHide={() => {
                     setTaskAddFormShow(false);
                     setTaskDataObj({});
+                    setErrMsg({})
                 }}
                 contentClassName="admin_form"
                 centered
@@ -204,6 +251,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                     <CgClose size={24} onClick={() => {
                         setTaskAddFormShow(false);
                         setTaskDataObj({});
+                        setErrMsg({})
                     }} style={{ cursor: "pointer" }} />
                 </Modal.Header>
 
@@ -213,7 +261,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                         <div className="row align-items-stretch pb-2">
                             <div className="col-md-5 d-flex flex-column">
                                 <div className="mb-3">
-                                    <label className="form-label admin_form_label">Task Name</label>
+                                    <label className="form-label admin_form_label">Task Name<span style={{ color: "red" }}>{errMsg.title}</span></label>
                                     <input
                                         type="text"
                                         name="title"
@@ -224,7 +272,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label admin_form_label">Assign to</label>
+                                    <label className="form-label admin_form_label">Assign to<span style={{ color: "red" }}>{errMsg.assignId}</span></label>
                                     <div className="d-flex gap-2">
                                         <div className="flex-grow-1">
                                             <Select
@@ -252,7 +300,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                                 </div>
                             </div>
                             <div className="col-md-7 d-flex flex-column">
-                                <label className="form-label admin_form_label">Description</label>
+                                <label className="form-label admin_form_label">Description <span style={{ color: "red" }}>{errMsg.description}</span></label>
                                 <textarea
                                     name="description"
                                     onChange={handleChange}
@@ -265,7 +313,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
 
                         <div className="row">
                             <div className="mb-3 col-md-4">
-                                <label className="form-label admin_form_label">Status</label>
+                                <label className="form-label admin_form_label">Status<span style={{ color: "red" }}>{errMsg.status}</span></label>
                                 <div className="d-flex gap-2">
                                     <div className="flex-grow-1">
                                         <Select
@@ -292,7 +340,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                                 </div>
                             </div>
                             <div className="mb-3 col-md-4">
-                                <label className="form-label admin_form_label">Priority</label>
+                                <label className="form-label admin_form_label">Priority<span style={{ color: "red" }}>{errMsg.priority}</span></label>
                                 <div className="d-flex gap-2">
                                     <div className="flex-grow-1">
                                         <Select
@@ -319,7 +367,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
                                 </div>
                             </div>
                             <div className="col-md-4 mb-3">
-                                <label className="form-label admin_form_label" >Due Date</label>
+                                <label className="form-label admin_form_label" >Due Date<span style={{ color: "red" }}>{errMsg.duedate}</span></label>
                                 <input type="date" name="duedate" onChange={handleChange} value={
                                     taskDataObj?.duedate
                                         ? new Date(taskDataObj.duedate).toISOString().split("T")[0]

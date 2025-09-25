@@ -42,6 +42,11 @@ interface FacilityOption {
     label: string;
 }
 
+interface errMsg {
+    title?: string;
+    description?: string;
+}
+
 const Project = () => {
     const [project, setProject] = useState<ProjectData[]>([]);
     const [collaborator, setCollaborator] = useState<collaborators>({ userId: '' })
@@ -50,7 +55,7 @@ const Project = () => {
     const [projectDataObj, setProjectDataObj] = useState<ProjectDataObj>({});
     const [selectedCollab, setSelectedCollab] = useState<FacilityOption | null>(null);
     const router = useRouter();
-    const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
+    const [errMsg, setErrMsg] = useState<errMsg>({});
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -67,24 +72,36 @@ const Project = () => {
         fetchDetails()
     }, []);
 
-    const validateForm = () => {
-        const newErrors: { title?: string; description?: string } = {};
+    const validateField = (name: string, value: string) => {
+        let errors = { ...errMsg };
+        switch (name) {
+            case "title":
+            case "description":
+                delete errors[name];
+                break;
+            default:
+                break;
+        }
+        setErrMsg(errors);
+    };
 
-        if (!projectDataObj?.title?.trim()) {
-            newErrors.title = "Project name is required";
-        }
-        if (!projectDataObj?.description?.trim()) {
-            newErrors.description = "Description is required";
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+    const validateForm = () => {
+        const errors: { [key: string]: string } = {};
+        const fields: (keyof ProjectDataObj)[] = ["title", "description"];
+        fields.forEach((field) => {
+            const value = projectDataObj[field];
+            if (!value || (typeof value === "string" && value.trim() === "")) {
+                errors[field] = "*";
+            }
+        });
+        setErrMsg(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const submitForm = async () => {
         if (!validateForm()) {
             return;
         }
-
         try {
             if (projectDataObj?._id) {
                 const editProjectRes = await axios.put(`${API_ADMIN_URL}/updateproject`, projectDataObj, {
@@ -98,6 +115,7 @@ const Project = () => {
                 );
                 setProjectAddFormShow(false)
                 setProjectDataObj({})
+                setErrMsg({})
                 return toast.success("Project update successfully");
             }
             else {
@@ -108,6 +126,7 @@ const Project = () => {
                 setProject((prevProject) => [...prevProject, data]);
                 setProjectAddFormShow(false)
                 setProjectDataObj({})
+                setErrMsg({})
                 return toast.success("Project add successfully");
             }
         } catch (error: any) {
@@ -121,6 +140,7 @@ const Project = () => {
             ...(prev || {}),
             [name]: value
         }))
+        validateField(name,value)
     }
 
     const memberOptions = (memberData || []).map((item) => ({
@@ -204,6 +224,7 @@ const Project = () => {
                 onHide={() => {
                     setProjectAddFormShow(false);
                     setProjectDataObj({});
+                    setErrMsg({})
                 }}
                 contentClassName="admin_form"
                 centered
@@ -216,6 +237,7 @@ const Project = () => {
                     <CgClose size={24} onClick={() => {
                         setProjectAddFormShow(false);
                         setProjectDataObj({});
+                        setErrMsg({})
                     }} style={{ cursor: "pointer" }} />
                 </Modal.Header>
 
@@ -225,7 +247,7 @@ const Project = () => {
                         <div className="row align-items-stretch pb-2">
                             <div className="col-md-5 d-flex flex-column">
                                 <div className="mb-3">
-                                    <label className="form-label admin_form_label">Project Name <span style={{ color: "red" }}>*</span></label>
+                                    <label className="form-label admin_form_label">Project Name<span style={{ color: "red" }}>{errMsg.title}</span></label>
                                     <input
                                         type="text"
                                         name="title"
@@ -234,7 +256,6 @@ const Project = () => {
                                         className="form-control"
                                         placeholder="Enter project name"
                                     />
-                                    {errors.title && <div className="invalid-feedback">{errors.title}</div>}
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label admin_form_label">Collaborators</label>
@@ -292,7 +313,7 @@ const Project = () => {
                                 </div>
                             </div>
                             <div className="col-md-7 d-flex flex-column">
-                                <label className="form-label admin_form_label">Description <span style={{ color: "red" }}>*</span></label>
+                                <label className="form-label admin_form_label">Description <span style={{ color: "red" }}>{errMsg.description}</span></label>
                                 <textarea
                                     name="description"
                                     onChange={handleChange}
@@ -300,7 +321,6 @@ const Project = () => {
                                     className="form-control flex-grow-1"
                                     style={{ resize: 'none' }}
                                 />
-                                {errors.description && <div className="invalid-feedback">{errors.description}</div>}
                             </div>
                         </div>
 
@@ -323,5 +343,4 @@ const Project = () => {
         </div>
     )
 }
-
 export default Project;
