@@ -12,6 +12,7 @@ import { CgClose } from "react-icons/cg";
 import Select from 'react-select';
 import { SingleValue } from "react-select";
 import { useRouter } from 'next/navigation';
+import BackButton from "@/app/utils/backbutton";
 
 interface ProjectData {
     _id: string,
@@ -177,11 +178,12 @@ const Project = () => {
     }
 
     return (
-        <div className="container-fluid m-3 py-3 admin_div">
+        <div className="container-fluid my-3 py-3 admin_div">
             <div className="admin_div_mainsec m-3">
                 <div>Project Management</div>
-                <div>
+                <div className="d-flex gap-1">
                     <button className="admin_city_add" onClick={OpenProjectAddModal}>Add Project</button>
+                    <BackButton />
                 </div>
             </div>
             <DataTable value={project} rows={10} tableStyle={{ minWidth: '50rem' }} sortOrder={-1}>
@@ -191,7 +193,7 @@ const Project = () => {
                 <Column header="Add Task" body={(rawData) => (
                     <div>
                         <button className="screen_add" onClick={() => {
-                            router.push(`/${rawData._id}`)
+                            router.push(`/project/${rawData._id}`)
                         }}>Add</button>
                     </div>
                 )}></Column>

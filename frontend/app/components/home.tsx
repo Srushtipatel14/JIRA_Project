@@ -8,6 +8,7 @@ import Task from "./task/task";
 import TaskMember from "./memberTask/task";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Dashboard from "./dashboard/dashboard";
 
 const Homescreen = () => {
     const params = useParams();
@@ -54,11 +55,12 @@ const Homescreen = () => {
     return (
         <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
             <Navbar />
-            <div className="flex-grow-1 px-3">
+            <div className="flex-grow-1 mx-3">
                 {user.role === 'member' ? (
                     <TaskMember role={user.role} />
                 ) : (
-                    id ? <Task id={id} /> : <Project />
+                    // id ? <Task id={id} /> : <Project />
+                    <Dashboard/>
                 )}
             </div>
             <Footer />

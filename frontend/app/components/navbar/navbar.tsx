@@ -15,7 +15,6 @@ const Navbar = () => {
   const { selectUser, setSelectUser } = useUser();
   const [canvasshow, setCanvasShow] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     const user = Cookies.get("logged_user");
       if (user) {

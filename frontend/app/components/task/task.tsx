@@ -205,7 +205,7 @@ const Task: React.FC<TaskProps> = ({ id }) => {
     ];
 
     return (
-        <div className="container-fluid m-3 py-3 admin_div">
+        <div className="container-fluid my-3 py-3 admin_div">
             <div className="admin_div_mainsec m-3">
 
                 <div className="">Task Management</div>
