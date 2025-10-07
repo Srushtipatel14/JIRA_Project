@@ -1,7 +1,6 @@
 'use client';
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Navbar from "./navbar/navbar";
 import Footer from "./footer/footer";
 import Project from "./project/project";
 import Task from "./task/task";
@@ -53,8 +52,7 @@ const Homescreen = () => {
     }
 
     return (
-        <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
-            <Navbar />
+        <div className="d-flex flex-column" style={{ minHeight: "90vh" }}>
             <div className="flex-grow-1 mx-3">
                 {user.role === 'member' ? (
                     <TaskMember role={user.role} />

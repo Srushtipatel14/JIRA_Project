@@ -12,9 +12,13 @@ const Task = () => {
   }
 
   return (
-    <>
-      {id && <TaskScreen id={id} />}
-    </>
+    <div>
+      {id && (
+        <div className="px-3">
+          <TaskScreen id={id} />
+        </div>
+      )}
+    </div>
   );
 };
 
