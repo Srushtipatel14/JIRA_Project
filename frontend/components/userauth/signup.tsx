@@ -1,6 +1,6 @@
 'use client';
 
-import "../../css/userlogin.css";
+import "@/styles/userlogin.css";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { toast, ToastContainer } from "react-toastify";
@@ -9,6 +9,7 @@ import axios from "axios";
 import { API_AUTH_URL } from "@/utils/config";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useUser } from "../../context/userContext";
 
 interface formdata {
   userName?: string;
@@ -19,13 +20,14 @@ interface formdata {
 const UserSignup = () => {
   const router = useRouter();
   const [formdata, setFormdata] = useState<formdata>({});
+  const { setSelectUser } = useUser();
 
   const handlechange = (e: any) => {
     const { name, value } = e.target;
     setFormdata((prev) => ({
       ...prev,
       [name]: value
-    }))
+    }));
   }
 
   const submitForm = async () => {
@@ -34,15 +36,16 @@ const UserSignup = () => {
         withCredentials: true
       });
       if (response.data.success) {
-          Cookies.set("logged_user", JSON.stringify(response.data.data), {
-          expires: 1, 
-          secure: true,  
+        Cookies.set("logged_user", JSON.stringify(response.data.data), {
+          expires: 1,
+          secure: true,
           sameSite: "strict"
         });
-        router.push(`/`)
+        setSelectUser(response.data.data);
+        router.push(`/`);
       }
       else {
-        toast.error(response.data.message)
+        toast.error(response.data.message);
       }
     } catch (error: any) {
       toast.error(error.response.data.message)
@@ -70,7 +73,7 @@ const UserSignup = () => {
           <button className="button-primary w-100" onClick={submitForm}>Signup</button>
         </div>
         <div className="mt-5">
-          Already have an account? <Link href={"/user/login"} className="text-decoration-none">Login</Link>
+          Already have an account? <Link href={"/login"} className="text-decoration-none">Login</Link>
         </div>
       </div>
       <ToastContainer />

@@ -4,7 +4,7 @@ import { API_AUTH_URL } from "@/utils/config";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useUser } from "../context/userContext";
+import { useUser } from "../../context/userContext";
 import { useRouter } from "next/navigation";
 
 interface RightBarprops {
@@ -20,7 +20,7 @@ const RightBar: React.FC<RightBarprops> = ({ canvasshow, setCanvasShow }) => {
                 withCredentials: true
             })
             Cookies.remove("logged_user");
-            router.push(("/user/login"))
+            router.push(("/login"))
             setSelectUser(null);
             setCanvasShow(false)
         } catch (error: any) {

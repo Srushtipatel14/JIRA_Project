@@ -17,8 +17,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <ClientProviders>
-          <Navbar/>
+         <div style={{width:"100vw", height:"100vh"}} className="d-flex flex-column">
+           <Navbar/>
           {children}
+         </div>
         </ClientProviders>
       </body>
     </html>

@@ -8,6 +8,7 @@ import axios from "axios";
 import { API_AUTH_URL } from "@/utils/config";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useUser } from "../../context/userContext";
 
 interface formdata {
   userName?: string;
@@ -18,6 +19,7 @@ interface formdata {
 const UserLogin = () => {
   const router = useRouter();
   const [formdata, setFormdata] = useState<formdata>({});
+  const { setSelectUser } = useUser();
 
   const handlechange = (e: any) => {
     const { name, value } = e.target;
@@ -34,10 +36,11 @@ const UserLogin = () => {
       });
       if (response.data.success) {
         Cookies.set("logged_user", JSON.stringify(response.data.data), {
-          expires: 1, 
-          secure: true,  
+          expires: 1,
+          secure: true,
           sameSite: "strict"
         });
+        setSelectUser(response.data.data)
         router.push(`/`)
       }
       else {
@@ -67,7 +70,7 @@ const UserLogin = () => {
           <button className="button-primary w-100" onClick={submitForm}>Login</button>
         </div>
         <div className="mt-5">
-          Don't have an account? <Link href={"/user/signup"} className="text-decoration-none">Signup</Link>
+          Don't have an account? <Link href={"/signup"} className="text-decoration-none">Signup</Link>
         </div>
       </div>
       <ToastContainer />

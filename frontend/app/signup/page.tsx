@@ -1,4 +1,4 @@
-import UserSignup from "../../components/userauth/signup";
+import UserSignup from "@/components/userauth/signup";
 
 const Signup=()=>{
     return(

@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import "@/styles/userlogin.css";
 import RightBar from "./rightBar";
 import Image from 'next/image';
-import { useSearch } from "../context/searchContext";
-import { useUser } from "../context/userContext";
+import { useSearch } from "../../context/searchContext";
+import { useUser } from "../../context/userContext"
 import Cookies from "js-cookie";
 
 const Navbar = () => {
@@ -23,7 +23,7 @@ const Navbar = () => {
       }
       else {
         setSelectUser(null);
-        router.push("/user/login")
+        router.push("/login")
       }
   }, []);
   return (
@@ -80,7 +80,7 @@ const Navbar = () => {
                     : 'Guest'}</p>
                 </div>
               ) : (
-                <button className="signin_btn" onClick={() => router.push("/user/login")}>Login</button>
+                <button className="signin_btn" onClick={() => router.push("/login")}>Login</button>
               )}
 
               <IoMenu size={32} style={{ cursor: "pointer" }} onClick={() => setCanvasShow(true)} />

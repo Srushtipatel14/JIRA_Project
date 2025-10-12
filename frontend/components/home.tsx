@@ -9,7 +9,7 @@ import Dashboard from "./dashboard/dashboard";
 
 const Homescreen = () => {
     const params = useParams();
-    const router=useRouter();
+    const router = useRouter();
     let id = params?.id;
     if (Array.isArray(id)) {
         id = id[0];
@@ -23,8 +23,8 @@ const Homescreen = () => {
             if (loggedUser) {
                 setUser(JSON.parse(loggedUser));
             }
-            else{
-                router.push("/user/login")
+            else {
+                router.push("/login")
             }
         }
     }, []);
@@ -55,8 +55,7 @@ const Homescreen = () => {
                 {user.role === 'member' ? (
                     <TaskMember role={user.role} />
                 ) : (
-                    // id ? <Task id={id} /> : <Project />
-                    <Dashboard/>
+                    <Dashboard />
                 )}
             </div>
             <Footer />
