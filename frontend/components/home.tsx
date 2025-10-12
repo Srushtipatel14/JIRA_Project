@@ -2,8 +2,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Footer from "./footer/footer";
-import Project from "./project/project";
-import Task from "./task/task";
 import TaskMember from "./memberTask/task";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";

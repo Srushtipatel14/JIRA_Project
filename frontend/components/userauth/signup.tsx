@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { toast, ToastContainer } from "react-toastify";
 import { useState } from "react";
 import axios from "axios";
-import { API_AUTH_URL } from "@/app/utils/config";
+import { API_AUTH_URL } from "@/utils/config";
 import Link from "next/link";
 import Cookies from "js-cookie";
 

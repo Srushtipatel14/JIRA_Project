@@ -1,4 +1,3 @@
-// app/components/ClientProviders.tsx ('use client')
 'use client';
 import { SearchProvider } from "./context/searchContext";
 import { UserProvider } from "./context/userContext";

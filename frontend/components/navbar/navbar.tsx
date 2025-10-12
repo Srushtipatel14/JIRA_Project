@@ -3,7 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { useRouter } from 'next/navigation';
-import "../../css/userlogin.css";
+import "@/styles/userlogin.css";
 import RightBar from "./rightBar";
 import Image from 'next/image';
 import { useSearch } from "../context/searchContext";

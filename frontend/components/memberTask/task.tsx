@@ -1,5 +1,5 @@
 "use client";
-import "../../css/cityadmin.css";
+import "@/styles/layoutdesign.css";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from "react";

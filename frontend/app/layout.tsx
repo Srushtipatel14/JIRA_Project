@@ -1,8 +1,8 @@
-import "./globals.css";
+import "@/styles/globals.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./components/navbar/navbar";
-import ClientProviders from "./components/clientProvider";
+import Navbar from "@/components/navbar/navbar";
+import ClientProviders from "@/components/clientProvider";
 
 export const metadata = {
   title: "Jira",

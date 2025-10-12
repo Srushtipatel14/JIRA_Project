@@ -1,7 +1,6 @@
 'use client';
-
 import { useParams } from "next/navigation";
-import TaskScreen from "../../components/task/task";
+import TaskScreen from "@/components/task/task";
 
 const Task = () => {
   const params = useParams();

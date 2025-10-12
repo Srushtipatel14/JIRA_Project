@@ -1,5 +1,5 @@
 "use client";
-import "../../css/cityadmin.css";
+import "@/styles/layoutdesign.css";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useEffect, useState } from "react";
@@ -11,8 +11,7 @@ import { Modal } from "react-bootstrap";
 import { CgClose } from "react-icons/cg";
 import Select from 'react-select';
 import { SingleValue } from "react-select";
-import { useRouter } from 'next/navigation';
-import BackButton from "@/app/utils/backbutton";
+import BackButton from "@/utils/backbutton";
 
 interface TaskData {
     _id: string,
