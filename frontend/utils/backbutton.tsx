@@ -9,7 +9,4 @@ const BackButton = () => {
         </button>
     )
 };
-
-
-
 export default BackButton;
