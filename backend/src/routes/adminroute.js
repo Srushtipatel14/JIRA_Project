@@ -10,6 +10,7 @@ const getSingleTask =require("../controllers/admin/tasks/getsingletask");
 const getAllTaskByProject=require("../controllers/admin/tasks/getalltaskbyproject");
 const getAllUser=require("../controllers/admin/users/getalluser")
 const {getAccessToAdmin}=require("../middlewares/authorization/authAdmin");
+const getDashBoardData=require("../controllers/admin/dashboard/dashboardData")
 
 
 router.post("/createproject",getAccessToAdmin,createproject);
@@ -23,5 +24,6 @@ router.get("/getallproject",getAccessToAdmin,getAllProject)
 router.get("/getsingletask/:id",getAccessToAdmin,getSingleTask)
 router.get("/getalltaskbyproject/:id",getAccessToAdmin,getAllTaskByProject)
 router.get("/getalluser",getAccessToAdmin,getAllUser)
+router.get("/insights",getAccessToAdmin,getDashBoardData);
 
 module.exports=router;

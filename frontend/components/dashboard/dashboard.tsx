@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { API_ADMIN_URL } from "../../utils/config";
 
 const Dashboard = () => {
+
+  const [insights, setInsights] = useState("Loading AI insights...");
+  useEffect(() => {
+    const fetchInsights = async () => {
+      try {
+        const { data } = await axios.get(`${API_ADMIN_URL}/insights`, { withCredentials: true });
+        setInsights(data.insights);
+      } catch (err) {
+        setInsights("⚠️ Unable to fetch AI insights.");
+      }
+    };
+    fetchInsights();
+  }, []);
+
   return (
     <div className="container-fluid py-4">
       <div className="row">
