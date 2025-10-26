@@ -1,21 +1,52 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_ADMIN_URL } from "../../utils/config";
+import { toast, ToastContainer } from "react-toastify";
+
+interface summaryData {
+  projects: number;
+  tasks: number;
+  completeTasks: number;
+  pendingTasks: number;
+  overDueTasks: number;
+  inProgressTasks: number;
+  summary:string;
+}
 
 const Dashboard = () => {
 
-  const [insights, setInsights] = useState("Loading AI insights...");
+  const [summary, setSummary] = useState<summaryData | null>(null);
   useEffect(() => {
     const fetchInsights = async () => {
       try {
         const { data } = await axios.get(`${API_ADMIN_URL}/insights`, { withCredentials: true });
-        setInsights(data.insights);
-      } catch (err) {
-        setInsights("⚠️ Unable to fetch AI insights.");
+        setSummary(data.data);
+      } catch (err: any) {
+        return toast.error(err.response?.data?.message || "Something went wrong");
       }
     };
     fetchInsights();
   }, []);
+
+  if (summary===null) {
+        return (
+            <div
+                style={{
+                    height: "100vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#f8f9fa",
+                    flexDirection: "column",
+                }}
+            >
+                <div className="spinner-border text-primary" role="status" style={{ width: '2rem', height: '2rem' }}>
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-3">Loading...</p>
+            </div>
+        );
+    }
 
   return (
     <div className="container-fluid py-4">
@@ -27,7 +58,7 @@ const Dashboard = () => {
                 <div className="card bg-primary-subtle text-primary shadow-sm rounded-3">
                   <div className="card-body text-center">
                     <h6 className="card-title">Projects</h6>
-                    <h4 className="card-text fw-bold fs-1">12</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.projects}</h4>
                   </div>
                 </div>
               </div>
@@ -35,7 +66,7 @@ const Dashboard = () => {
                 <div className="card bg-info-subtle text-info shadow-sm rounded-3">
                   <div className="card-body text-center">
                     <h6 className="card-title">Tasks</h6>
-                    <h4 className="card-text fw-bold fs-1">24</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.tasks}</h4>
                   </div>
                 </div>
               </div>
@@ -43,7 +74,7 @@ const Dashboard = () => {
                 <div className="card bg-success-subtle text-success shadow-sm rounded-3">
                   <div className="card-body text-center">
                     <h6 className="card-title">Completed</h6>
-                    <h4 className="card-text fw-bold fs-1">18</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.completeTasks}</h4>
                   </div>
                 </div>
               </div>
@@ -51,7 +82,7 @@ const Dashboard = () => {
                 <div className="card bg-warning-subtle text-warning shadow-sm rounded-3">
                   <div className="card-body text-center">
                     <h6 className="card-title">Pending</h6>
-                    <h4 className="card-text fw-bold fs-1">5</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.pendingTasks}</h4>
                   </div>
                 </div>
               </div>
@@ -59,7 +90,7 @@ const Dashboard = () => {
                 <div className="card bg-danger-subtle text-danger shadow-sm rounded-3">
                   <div className="card-body text-center">
                     <h6 className="card-title">Overdue</h6>
-                    <h4 className="card-text fw-bold fs-1">1</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.overDueTasks}</h4>
                   </div>
                 </div>
               </div>
@@ -67,7 +98,7 @@ const Dashboard = () => {
                 <div className="card" style={{ backgroundColor: '#fdb890ff', color: '#ee5c08ff' }}>
                   <div className="card-body text-center">
                     <h6 className="card-title">In Progress</h6>
-                    <h4 className="card-text fw-bold fs-1">7</h4>
+                    <h4 className="card-text fw-bold fs-1">{summary?.inProgressTasks}</h4>
                   </div>
                 </div>
               </div>
@@ -75,7 +106,7 @@ const Dashboard = () => {
           </div>
           <div className="bg-white rounded-3 p-3 shadow-sm">
             <h5 className="mb-2">Left Side 2</h5>
-            <p className="text-muted mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam voluptatem voluptas beatae atque! Incidunt aliquid error repudiandae distinctio quidem rerum quas qui voluptatum vel repellendus, fuga debitis vitae deserunt nemo? Provident non, quam officiis est voluptatibus animi officia obcaecati, dicta odit dolore quis recusandae hic impedit nihil, ex placeat. Sapiente accusantium quidem voluptas ab debitis doloribus reiciendis et repellat eligendi praesentium omnis dolor labore, veritatis iusto quia soluta, tempora, provident nesciunt. Assumenda saepe ipsum magni minima incidunt, nemo eligendi eveniet vero excepturi modi unde ipsa natus totam? Sint maiores nesciunt quia atque ea distinctio iure adipisci nobis omnis aut! Possimus eveniet asperiores inventore consequatur minus! Eveniet, quia atque id quidem explicabo, deleniti quas fugiat saepe sint deserunt maxime quos molestias laboriosam obcaecati facilis dolores accusamus, iste velit numquam aperiam! Iure quia nobis nesciunt entore? Vero suscipit obcaecati dolorum, ipsum accusantium modi ullam eaque porro cupiditate commodi nostrum, magnam eveniet accusamus sapiente eius tenetur. Officiis doloremque ratione voluptates tempore quasi laborum vel! Praesentium consequatur aliquam, blanditiis id dolore cum aut accusamus ab ipsum eos ea, ad laborum illo nihil alias optio? Incidunt quaerat magnam non recusandae esse, sint dolores quas in totam iusto aperiam aliquam eos dignissimos debitis maxime optio modi commodi ipsam vero, eum laboriosam quibusdam dolor illum voluptas? A, et nam!</p>
+            <p className="text-muted mb-0">{summary?.summary}</p>
           </div>
         </div>
         <div className="col-lg-3 col-md-4 col-12 mt-3 mt-md-0">
@@ -85,6 +116,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

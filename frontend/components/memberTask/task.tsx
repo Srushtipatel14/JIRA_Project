@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { API_MEMBER_URL } from "../../utils/config";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
 import Select from 'react-select';
 import { SingleValue } from "react-select";
 

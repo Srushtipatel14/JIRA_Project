@@ -14,16 +14,16 @@ const getDashBoardData = async (req, res, next) => {
 
         const summary = {
             totalTasks: tasks.length,
-            overdueTasks: tasks.filter((t) => new Date(t.dueDate) < new Date() && t.status !== "completed").length,
-            completedTasks: tasks.filter((t) => t.status === "completed").length,
+            overdueTasks: tasks.filter((t) => new Date(t.duedate) < new Date() && t.status !== "Complete").length,
+            completedTasks: tasks.filter((t) => t.status === "Complete").length,
             usersTaskCount: users.map((u) => ({
                 name: u.name,
-                taskCount: tasks.filter((t) => t.assignedTo?.toString() === u._id.toString()).length
+                taskCount: tasks.filter((t) => t.assignId?.toString() === u._id.toString()).length
             })),
             projectsStatus: projects.map((p) => ({
                 name: p.name,
                 totalTasks: tasks.filter((t) => t.projectId?.toString() === p._id.toString()).length,
-                completed: tasks.filter((t) => t.projectId?.toString() === p._id.toString() && t.status === "completed").length,
+                completed: tasks.filter((t) => t.projectId?.toString() === p._id.toString() && t.status === "Complete").length,
             })),
         };
 
@@ -31,7 +31,17 @@ const getDashBoardData = async (req, res, next) => {
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);
         const insights = result.response.text();
-        return res.json({ success: true, message: "getting summarized data successfully", data: insights });
+        const dataVal={
+            summary:insights,
+            tasks:tasks.length,
+            projects:projects.length,
+            completeTasks:tasks.filter((t) => t.status === "Complete").length,
+            pendingTasks:tasks.filter((t) => t.status === "Pending").length,
+            inProgressTasks:tasks.filter((t) => t.status === "In Progress").length,
+            overDueTasks:tasks.filter((t) => new Date(t.duedate) < new Date() && t.status !== "Complete").length
+
+        }
+        return res.json({ success: true, message: "getting summarized data successfully", data: dataVal });
     } catch (err) {
         console.error(err);
         return next(new ErrorHandler("Something went wrong", 500, err));
